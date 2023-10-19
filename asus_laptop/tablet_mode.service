@@ -1,0 +1,9 @@
+[Unit]
+Description=Disables keyboard and touchpad when tablet mode is enabled
+
+[Service]
+ExecStart=sh /usr/local/bin/tablet_mode_input_toggle.sh
+Environment=DISPLAY=:0  # Add this line to set the DISPLAY variable
+
+[Install]
+WantedBy=multi-user.target
