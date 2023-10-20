@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=<version>
+Type=Application
+Name=yazi
+GenericName=Terminal file manager
+Comment=Blazing fast, feature-rich, rust, async I/O based
+TryExec=yazi
+Exec=kitty -e ~/.local/bin/yazi
+Icon=~/.local/share/icons/yazi.png
+Categories=System;FileManager;

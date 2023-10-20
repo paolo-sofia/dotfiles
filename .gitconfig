@@ -1,1 +1,5 @@
-/home/paolo/.gitconfig
+[user]
+	email = paolosofia6@gmail.com
+	name = Paolo Sofia
+[init]
+	defaultBranch = main
