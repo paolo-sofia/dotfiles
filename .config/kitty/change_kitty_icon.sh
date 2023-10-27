@@ -1,7 +1,6 @@
 #!/usr/bin/sh
 
 if [ -z "$1" ]; then
-	echo "porcodio $1"
 	user=paolo
 else
 	user=$1

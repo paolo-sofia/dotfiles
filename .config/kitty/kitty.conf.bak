@@ -1,0 +1,45 @@
+font_family      JetBrains Mono Nerd Font
+bold_font        auto
+italic_font      auto
+bold_italic_font auto
+font_size 11.0
+#theme start
+#theme end
+confirm_os_window_close 1
+tab_bar_min_tabs            1
+tab_bar_edge                bottom
+tab_bar_style               powerline
+tab_powerline_style         slanted
+tab_title_template          {title}{' :{}:'.format(num_windows) if num_windows > 1 else ''}
+tab_powerline_style angled
+tab_bar_margin_width 0.0
+tab_bar_margin_height 0.0 0.0
+
+#Cursor config
+cursor_shape beam
+cursor_blink_interval 0
+disable_ligatures never
+
+#url customization
+
+url_style curly
+
+# window 
+remember_window_size no
+initial_window_width 1080
+initial_window_height 600
+window_margin_width 2
+enabled_layouts fat,grid,tall,horizontal,vertical
+inactive_border_color #1e1e2e
+active_border_color #f9e2af
+window_border_width 2px
+
+#keybinds 
+map ctrl+c copy_to_clipboard
+map ctrl+v paste_from_clipboard
+
+
+# BEGIN_KITTY_THEME
+# Gruvbox Dark Hard
+include current-theme.conf
+# END_KITTY_THEME

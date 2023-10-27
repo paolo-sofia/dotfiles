@@ -1,0 +1,238 @@
+(include "./workspaces_hyprland.yuck")
+
+(defpoll timestr
+  :interval "1s"
+  :initial-value ""
+  "date '+%Y-%m-%d %H:%M'")
+
+(defpoll datestr
+  :interval "1m"
+  :initial-value ""
+  "date '+%Y-%m-%d %H:%M'")
+
+(defpoll batterystr
+   :interval "1m"
+   :initial-value ""
+   "scripts/battery.py -c")
+
+(defpoll batterystatus
+   :interval "5s";
+   :initial-value ""
+   "scripts/battery.py -s")
+
+(defpoll volume
+  :interval "0.05s"
+  "pactl get-sink-volume @DEFAULT_SINK@ | grep '%' | cut -d '/' -f 2 | cut -d '%' -f 1 | tr -d ' '")
+
+(defpoll ssid
+  :interval "10s"
+  "nmcli connection show --active | grep wifi | awk '{print $1}'")
+
+(defvar timewidget-hover false)
+(defvar batterywidget-hover false)
+(defvar volumewidget-hover false)
+(defvar statswidget-hover false)
+(defvar netwidget-hover false)
+
+(defwidget titlewidget []
+    (label
+     :class "title"
+     :style "${workspace_str['title'] == '' ? 'background-color: transparent;' : '' }"
+     :text "${workspace_str['title']}"))
+
+(defwidget ramwidget []
+    (label
+     :class "hidden"
+     :text "   ${round(EWW_RAM.used_mem_perc, 1)}%  "))
+
+(defwidget cpuwidget []
+    (label
+     :class "hidden"
+     :text "   ${round(EWW_CPU.avg, 1)}%  "))
+
+(defwidget tempwidget []
+    (label
+     :class "temp shown"
+     ;; :text "   ${round(EWW_NET.wlp1s0.up, 1)}%  "))
+     :text "  ${round(EWW_TEMPS['K10TEMP_TCTL'],0)}°"))
+
+(defwidget netwidget []
+    (hoverwidget
+        :class "net"
+        :onclick "nm-connection-editor &"
+        :hover-var "netwidget-hover"
+        :hover-cond netwidget-hover
+        (label
+         :class "net shown"
+         :text "${strlength(ssid) == 0 ? 'No Connection' : '   ${ssid}'}")
+        (label
+            :class "net hidden"
+            ;; :text "   ${round(EWW_NET.wlp1s0.up, 1)}%  "))
+            ;; :style "padding-left: 5px; padding-right: 5px;"
+            :text "${EWW_NET['wlp1s0']['NET_UP']} B  ${EWW_NET['wlp1s0']['NET_DOWN']} B ")))
+
+(defwidget statswidget []
+    (hoverwidget
+        :class "stats"
+        :onclick "kitty htop &"
+        :hover-var "statswidget-hover"
+        :hover-cond statswidget-hover
+        (tempwidget)
+        (box
+         :orientation "h"
+         :space-evenly false
+         (cpuwidget)
+         (ramwidget))))
+
+(defwidget volumewidget []
+    (hoverwidgetright
+        :class "volume"
+        :hover-var "volumewidget-hover"
+        :hover-cond volumewidget-hover
+        :onclick "pavucontrol-qt&"
+        (label
+         :class "shown"
+         :text " ${volume}")
+        (metric
+            :class "hidden"
+            :label ""
+            :value "${volume}"
+            :onchange "pactl set-sink-volume @DEFAULT_SINK@ {}%")))
+
+(defwidget batterywidget []
+    (hoverwidget
+        :class "battery"
+        :hover-var "batterywidget-hover"
+        :hover-cond batterywidget-hover
+        (label
+         :class "shown"
+         :text "${batterystr}")
+        (label
+         :class "hidden"
+         :style "padding-left: 5px; padding-right: 5px;"
+         :text "${batterystatus}")))
+
+(defwidget timewidget []
+    (hoverwidget
+        :class "time"
+        :hover-var "timewidget-hover"
+        :hover-cond timewidget-hover
+        (label
+         :class "shown"
+         :text "${timestr}")
+        (label
+         :class "hidden"
+         :text "  ${datestr}")))
+
+(defwidget metric [?class label value onchange]
+  (box :orientation "h"
+       :class "metric ${class}"
+       :space-evenly false
+    (box :class "label" label)
+    (scale :min 0
+           :max 101
+           :active {onchange != ""}
+           :value value
+           :onchange onchange)))
+
+(defwidget hoverwidget [?class ?onclick hover-var hover-cond]
+    (eventbox
+        :onclick onclick
+        :onhover "${EWW_EXECUTABLE} update ${hover-var}=true"
+        :onhoverlost "${EWW_EXECUTABLE} update ${hover-var}=false"
+        (box
+            :class "hover-widget ${class}"
+            :orientation "h"
+            :halign "end"
+            :height 26
+            :space-evenly false
+            :spacing 5
+            (revealer
+                :reveal hover-cond
+                :transition "slideleft"
+                (children :nth 1))
+            (children :nth 0))))
+
+(defwidget hoverwidgetright [?class ?onclick hover-var hover-cond]
+    (eventbox
+        :onclick onclick
+        :onhover "${EWW_EXECUTABLE} update ${hover-var}=true"
+        :onhoverlost "${EWW_EXECUTABLE} update ${hover-var}=false"
+        (box
+            :class "hover-widget ${class}"
+            :orientation "h"
+            :halign "end"
+            :height 26
+            :space-evenly false
+            :spacing 5
+            (children :nth 0)
+            (revealer
+                :reveal hover-cond
+                :transition "slideright"
+                (children :nth 1)))))
+
+(defwidget barcontent []
+    (centerbox
+        (bar-left)
+        (bar-center)
+        (bar-right)
+    )
+)
+
+(defwidget bar-left []
+  (box
+    :class "bar-left"
+    :halign "start"
+    :space-evenly false
+    (workspaces)
+  )
+)
+
+(defwidget bar-center []
+  (box
+    :class "bar-center"
+    (titlewidget)
+    (timewidget)))
+
+(defwidget bar-right []
+  (box
+   :valign "center"
+   :space-evenly false
+   :halign "end"
+   :class "bar-right"
+   (netwidget)
+   ;; (systray :pack-direction "rtl")
+   (statswidget)
+   (volumewidget)
+   (batterywidget)
+   ))
+
+
+(defwindow bar
+    :monitor 0
+    :geometry (geometry :x "0%"
+                        :y "8px"
+                        :width "98%"
+                        :height "26px"
+                        :anchor "top center")
+    :stacking "bg"
+    ;; :reserve (struts :distance "10px" :side "top")
+    :windowtype "desktop"
+    ;; :wm-ignore false
+    ;; :focusable false
+    :exclusive true
+    (barcontent))
+
+;; Use this window for a non-eww bar
+;; (defwindow workspaceoverlay
+;;     :monitor 0
+;;     :geometry (geometry :x "0%"
+;;                         :y "10px"
+;;                         :width "35%"
+;;                         :height "26px"
+;;                         :anchor "top center")
+;;     :stacking "fg"
+;;     :reserve (struts :distance "40px" :side "top")
+;;     :windowtype "dock"
+;;     :wm-ignore true
+;;     (workspaces))
