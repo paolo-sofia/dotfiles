@@ -25,10 +25,10 @@ def main():
     result = subprocess.run(["cat", "/sys/class/power_supply/BATT/capacity"], capture_output=True)
     capacity = int(result.stdout)
 
-    if (option == '-c'):
+    if option == '-c':
         print(f"{battery_icons[capacity // 20]}    {capacity}%")
         exit(0)
-    elif (option == '-s'):
+    elif option == '-s':
         result = subprocess.run(["cat", "/sys/class/power_supply/BATT/status"], capture_output=True)
         status = str(result.stdout)[2:-3]
         icon = charge_icons[0] if status == "Charging" else charge_icons[1]
