@@ -54,7 +54,7 @@ sudo dnf install -y lame\* --exclude=lame-devel
 sudo dnf group upgrade --with-optional Multimedia -y
 
 # install packages
-sudo dnf install -y nextcloud-client git mpv foliate gparted htop transmission xournalpp kitty tldr nemo gnome-keyring okular nemo-image-converter nemo-gsconnect nextcloud-client-nemo folder-color-switcher-nemo gnome-text-editor bash-completion fzf pop-gnome-shell-theme.noarch pop-gtk4-theme pop-sound-theme pop-icon-theme gnome-tweaks gnome-shell-extension-appindicator pop-gnome-shell-theme pop-gtk4-theme pop-sound-theme pop-icon-theme stow
+sudo dnf install -y nextcloud-client git mpv foliate gparted htop transmission xournalpp kitty tldr nemo gnome-keyring okular nemo-image-converter nemo-gsconnect nextcloud-client-nemo folder-color-switcher-nemo gnome-text-editor bash-completion fzf pop-gnome-shell-theme.noarch pop-gtk4-theme pop-sound-theme pop-icon-theme gnome-tweaks gnome-shell-extension-appindicator pop-gnome-shell-theme pop-gtk4-theme pop-sound-theme pop-icon-theme stow poetry seahorse
 
 # brave
 sudo dnf install dnf-plugins-core -y
@@ -95,8 +95,8 @@ git clone https://github.com/paolo-sofia/dotfiles.git
 git clone https://github.com/paolo-sofia/background-setter.git
 git clone https://github.com/paolo-sofia/amd-sfh-hid-dkms-asus.git
 
+## Add dotfiles
 mkdir -p ~/.config/ruff
-
 cd ~/git/dotfiles || return
 stow -R bash -t ~/
 stow -R git -t ~/
@@ -105,3 +105,4 @@ stow -R kitty -t /home/paolo/.config/kitty/
 stow -R nano -t ~/
 stow -R ruff -t /home/paolo/.config/ruff/
 
+## Create new ssh key and add to github
