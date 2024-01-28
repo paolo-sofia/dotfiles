@@ -106,3 +106,7 @@ stow -R nano -t ~/
 stow -R ruff -t /home/paolo/.config/ruff/
 
 ## Create new ssh key and add to github
+ssh-keygen -t ed25519 -a 128 -f ~/.ssh/id_ed25519
+ssh-add
+
+brave-browser https://github.com/settings/keys
