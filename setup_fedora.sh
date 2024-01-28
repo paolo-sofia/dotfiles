@@ -95,8 +95,13 @@ git clone https://github.com/paolo-sofia/dotfiles.git
 git clone https://github.com/paolo-sofia/background-setter.git
 git clone https://github.com/paolo-sofia/amd-sfh-hid-dkms-asus.git
 
-mkdir ~/.config/ruff
+mkdir -p ~/.config/ruff
 
-cd ~/git/dotfiles/.config || return
-stow kitty -t /home/paolo/.config/kitty/
-stow ruff -t /home/paolo/.config/ruff/
+cd ~/git/dotfiles || return
+stow -R bash -t ~/
+stow -R git -t ~/
+stow -R input -t ~/
+stow -R kitty -t /home/paolo/.config/kitty/
+stow -R nano -t ~/
+stow -R ruff -t /home/paolo/.config/ruff/
+
