@@ -18,6 +18,14 @@
 
 # tlp o qualcosa di simile
 
+gitclone()
+{
+  URL=$2
+  FOLDER=$1
+  if [ ! -d "$FOLDER" ] ; then
+      git clone "$URL" "$FOLDER"
+  fi
+}
 # edit dnf conf
 echo 'fastestmirror=1' | sudo tee -a /etc/dnf/dnf.conf
 echo 'max_parallel_downloads=10' | sudo tee -a /etc/dnf/dnf.conf
@@ -35,12 +43,12 @@ sudo fwupdmgr refresh --force -y
 sudo fwupdmgr get-updates -y
 sudo fwupdmgr update -y
 
-mkdir "$HOME/git"
-mkdir "$HOME/python-virtualenv"
+mkdir -p "$HOME/git"
+mkdir -p "$HOME/python-virtualenv"
 
 # rpm fusion
-dnf upgrade --refresh -y
-dnf groupupdate core -y
+sudo dnf upgrade --refresh -y
+sudo dnf groupupdate core -y
 sudo dnf install -y rpmfusion-free-release-tainted
 sudo dnf install -y dnf-plugins-core
 sudo dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
@@ -74,12 +82,13 @@ flatpak update
 flatpak install flathub md.obsidian.Obsidian -y
 flatpak install flathub org.moneymanagerex.MMEX -y
 flatpak install flathub com.mattjakeman.ExtensionManager -y
-flatpak flatpak install flathub com.spotify.Client -y
+flatpak install flathub com.spotify.Client -y
 
 # jetbrains toolbox e pycharm
 brave-browser https://www.jetbrains.com/toolbox-app/download/download-thanks.html?platform=linux
 
 # ruff
+pip install --upgrade pip
 pip install ruff
 
 # Install nerdfonts
@@ -90,10 +99,11 @@ rm ~/.local/share/fonts/JetBrainsMono-2.304.zip
 
 # cloning git repo
 cd ~/git || return
-git clone https://github.com/AdnanHodzic/auto-cpufreq.git
-git clone https://github.com/paolo-sofia/dotfiles.git
-git clone https://github.com/paolo-sofia/background-setter.git
-git clone https://github.com/paolo-sofia/amd-sfh-hid-dkms-asus.git
+
+gitclone auto-cpufreq https://github.com/AdnanHodzic/auto-cpufreq.git
+gitclone dotfiles https://github.com/paolo-sofia/dotfiles.git
+gitclone background-setter https://github.com/paolo-sofia/background-setter.git
+gitclone amd-sfh-hid-dkms-asus https://github.com/paolo-sofia/amd-sfh-hid-dkms-asus.git
 
 ## Add dotfiles
 mkdir -p ~/.config/ruff
@@ -110,3 +120,8 @@ ssh-keygen -t ed25519 -a 128 -f ~/.ssh/id_ed25519
 ssh-add
 
 brave-browser https://github.com/settings/keys
+
+## setting up pomodoro script
+cp pomodoro_script/Script.desktop ~/.config/autostart/
+
+cp ~/git/background-setter/Sfondi.desktop ~/.config/autostart/
