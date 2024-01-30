@@ -62,7 +62,7 @@ sudo dnf install -y lame\* --exclude=lame-devel
 sudo dnf group upgrade --with-optional Multimedia -y
 
 # install packages
-sudo dnf install -y python3-pip nextcloud-client git mpv foliate gparted htop transmission xournalpp kitty tldr nemo gnome-keyring okular nemo-image-converter nemo-gsconnect nextcloud-client-nemo folder-color-switcher-nemo gnome-text-editor bash-completion fzf pop-gnome-shell-theme.noarch pop-gtk4-theme pop-sound-theme pop-icon-theme gnome-tweaks gnome-shell-extension-appindicator pop-gnome-shell-theme pop-gtk4-theme pop-sound-theme pop-icon-theme stow poetry seahorse
+sudo dnf install -y python3-pip ruff nextcloud-client git mpv foliate gparted htop transmission xournalpp kitty tldr nemo gnome-keyring okular nemo-image-converter nemo-gsconnect nextcloud-client-nemo folder-color-switcher-nemo gnome-text-editor bash-completion fzf pop-gnome-shell-theme.noarch pop-gtk4-theme pop-sound-theme pop-icon-theme gnome-tweaks gnome-shell-extension-appindicator pop-gnome-shell-theme pop-gtk4-theme pop-sound-theme pop-icon-theme stow poetry seahorse
 
 # brave
 sudo dnf install dnf-plugins-core -y
@@ -87,9 +87,8 @@ flatpak install flathub com.spotify.Client -y
 # jetbrains toolbox e pycharm
 brave-browser https://www.jetbrains.com/toolbox-app/download/download-thanks.html?platform=linux
 
-# ruff
+# update pip
 pip install --upgrade pip
-pip install ruff
 
 # Install nerdfonts
 wget https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip
