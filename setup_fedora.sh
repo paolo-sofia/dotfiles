@@ -104,7 +104,7 @@ gitclone dotfiles https://github.com/paolo-sofia/dotfiles.git
 gitclone background-setter https://github.com/paolo-sofia/background-setter.git
 gitclone amd-sfh-hid-dkms-asus https://github.com/paolo-sofia/amd-sfh-hid-dkms-asus.git
 
-# Add dotfiles
+## Add dotfiles
 mkdir -p ~/.config/ruff
 cd ~/git/dotfiles || return
 stow -R bash -t ~/
@@ -114,16 +114,16 @@ stow -R kitty -t /home/paolo/.config/kitty/
 stow -R nano -t ~/
 stow -R ruff -t /home/paolo/.config/ruff/
 
-# Create new ssh key and add to github
+## Create new ssh key and add to github
 ssh-keygen -t ed25519 -a 128 -f ~/.ssh/id_ed25519
 ssh-add
 
 brave-browser https://github.com/settings/keys
 
-# setting up pomodoro script
+## setting up pomodoro script and background setter
 cp pomodoro_script/Script.desktop ~/.config/autostart/
 
-# setting up background setter
+
 python -m venv ~/python-virtualenv/background-setter-venv/venv/
 source ~/python-virtualenv/background-setter-venv/venv/bin/activate
 pip install --upgrade pip
@@ -132,12 +132,3 @@ deactivate
 
 cp ~/git/background-setter/Sfondi.desktop ~/.config/autostart/
 
-# disable gnome software at startup
-sudo cp /etc/xdg/autostart/org.gnome.Software.desktop ~/.config/autostart/
-sudo chown $USER:$USER ~/.config/autostart/org.gnome.Software.desktop
-echo 'X-GNOME-Autostart-enabled=false' >> ~/.config/autostart/org.gnome.Software.desktop
-
-# set battery threshold
-sudo cp ~/git/dotfiles/asus_laptop/battery-charge-threshold.service /etc/systemd/system/battery-charge-threshold.service
-sudo systemctl enable battery-charge-threshold.service
-sudo systemctl start battery-charge-threshold.service
