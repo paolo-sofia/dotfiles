@@ -44,7 +44,6 @@ sudo fwupdmgr get-updates -y
 sudo fwupdmgr update -y
 
 mkdir -p "$HOME/git"
-mkdir -p "$HOME/python-virtualenv"
 
 # rpm fusion
 sudo dnf upgrade --refresh -y
@@ -62,7 +61,7 @@ sudo dnf install -y lame\* --exclude=lame-devel
 sudo dnf group upgrade --with-optional Multimedia -y
 
 # install packages
-sudo dnf install -y python3-pip ruff nextcloud-client git mpv foliate gparted htop transmission xournalpp kitty tldr nemo gnome-keyring okular nemo-image-converter nemo-gsconnect nextcloud-client-nemo folder-color-switcher-nemo gnome-text-editor bash-completion fzf pop-gnome-shell-theme.noarch pop-gtk4-theme pop-sound-theme pop-icon-theme gnome-tweaks gnome-shell-extension-appindicator pop-gnome-shell-theme pop-gtk4-theme pop-sound-theme pop-icon-theme stow poetry seahorse
+sudo dnf install -y python3-pip ruff nextcloud-client git mpv foliate gparted htop transmission xournalpp kitty tldr nemo gnome-keyring okular nemo-image-converter nemo-gsconnect nextcloud-client-nemo folder-color-switcher-nemo gnome-text-editor bash-completion fzf pop-gtk4-theme pop-sound-theme pop-icon-theme gnome-tweaks gnome-shell-extension-appindicator pop-gtk4-theme pop-sound-theme pop-icon-theme stow seahorse
 
 # brave
 sudo dnf install dnf-plugins-core -y
@@ -80,7 +79,7 @@ sudo dnf remove totem gnome-font-viewer cheese-* baobab gnome-boxes gnome-connec
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 flatpak update
 flatpak install flathub md.obsidian.Obsidian -y
-flatpak install flathub org.moneymanagerex.MMEX -y
+# flatpak install flathub org.moneymanagerex.MMEX -y
 flatpak install flathub com.mattjakeman.ExtensionManager -y
 flatpak install flathub com.spotify.Client -y
 
@@ -99,10 +98,10 @@ rm ~/.local/share/fonts/JetBrainsMono-2.304.zip
 # cloning git repo
 cd ~/git || return
 
-gitclone auto-cpufreq https://github.com/AdnanHodzic/auto-cpufreq.git
-gitclone dotfiles https://github.com/paolo-sofia/dotfiles.git
+# gitclone auto-cpufreq https://github.com/AdnanHodzic/auto-cpufreq.git
+# gitclone dotfiles https://github.com/paolo-sofia/dotfiles.git
 gitclone background-setter https://github.com/paolo-sofia/background-setter.git
-gitclone amd-sfh-hid-dkms-asus https://github.com/paolo-sofia/amd-sfh-hid-dkms-asus.git
+# gitclone amd-sfh-hid-dkms-asus https://github.com/paolo-sofia/amd-sfh-hid-dkms-asus.git
 
 ## Add dotfiles
 mkdir -p ~/.config/ruff
@@ -110,25 +109,26 @@ cd ~/git/dotfiles || return
 stow -R bash -t ~/
 stow -R git -t ~/
 stow -R input -t ~/
-stow -R kitty -t /home/paolo/.config/kitty/
+# stow -R kitty -t /home/paolo/.config/kitty/
 stow -R nano -t ~/
 stow -R ruff -t /home/paolo/.config/ruff/
 
 ## Create new ssh key and add to github
-ssh-keygen -t ed25519 -a 128 -f ~/.ssh/id_ed25519
-ssh-add
+# ssh-keygen -t ed25519 -a 128 -f ~/.ssh/id_ed25519
+# ssh-add
 
-brave-browser https://github.com/settings/keys
+# brave-browser https://github.com/settings/keys
 
 ## setting up pomodoro script and background setter
-cp pomodoro_script/Script.desktop ~/.config/autostart/
+mkdir -r ~/config/autostart
+ln -s $HOME/git/dotfiles/pomodoro_script/Script.desktop $HOME/.config/autostart/
 
-
-python -m venv ~/python-virtualenv/background-setter-venv/venv/
-source ~/python-virtualenv/background-setter-venv/venv/bin/activate
+cd ~/git/background-setter || return
+python -m venv .venv
+source .venv/bin/activate
 pip install --upgrade pip
-pip install -r ~/git/background-setter/requirements.txt
+pip install -r requirements.txt
 deactivate
 
-cp ~/git/background-setter/Sfondi.desktop ~/.config/autostart/
+ln -s $HOME/git/background-setter/Sfondi.desktop $HOME/.config/autostart/
 
